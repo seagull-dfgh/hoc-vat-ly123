@@ -1,0 +1,1809 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhysicLab - Chinh Phục Vật Lý Cùng Bé Chanh & Bé Bơ</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        theme: {
+                            yellowLight: '#FEFCE8',
+                            yellowSoft: '#FEF9C3',
+                            yellowBright: '#FEF08A',
+                            amber: '#EAB308',
+                            amberDark: '#CA8A04',
+                            emerald: '#10B981',
+                            emeraldDark: '#059669',
+                            sky: '#0EA5E9',
+                            skyDark: '#0284C7'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts: Plus Jakarta Sans (Dạng vuông hiện đại, cứng cáp) -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background: linear-gradient(180deg, #FEFCE8 0%, #F0FDF4 380px, #F8FAFC 100%);
+            letter-spacing: -0.01em;
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 8px; height: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #FEFCE8; border-radius: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #A7F3D0; border-radius: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #10B981; }
+        
+        /* High contrast result styles */
+        .ans-correct {
+            background-color: #D1FAE5 !important;
+            border: 2.5px solid #059669 !important;
+            color: #064E3B !important;
+        }
+        .ans-wrong {
+            background-color: #FEE2E2 !important;
+            border: 2.5px solid #DC2626 !important;
+            color: #7F1D1D !important;
+        }
+
+        /* Floating mascot animation */
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-6px); }
+        }
+        .mascot-float {
+            animation: floatSlow 3s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="text-slate-700 min-h-screen flex flex-col font-medium selection:bg-emerald-200 selection:text-emerald-950">
+
+    <!-- Top Navigation Header -->
+    <header class="bg-white/95 backdrop-blur-md sticky top-0 z-50 shadow-xs border-b-2 border-emerald-200/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-wrap items-center justify-between py-3 sm:h-20 gap-3">
+                
+                <!-- Logo & Brand (Đã bỏ dòng Đồng hành cùng...) -->
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="scrollToTop()">
+                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-emerald-500 via-sky-500 to-yellow-300 flex items-center justify-center text-white text-2xl shadow-md shadow-emerald-500/20 border border-emerald-300">
+                        <span class="text-2xl drop-shadow-xs">🍋</span>
+                    </div>
+                    <div class="flex flex-col justify-center">
+                        <div class="text-2xl sm:text-3xl font-black tracking-tight text-slate-800 leading-none">
+                            Chinh Phục <span class="text-sky-600">Vật</span><span class="text-emerald-600"> Lý</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Switcher: PHẦN A / PHẦN B -->
+                <div class="flex bg-emerald-50/90 p-1.5 rounded-2xl border border-emerald-200">
+                    <button onclick="switchMainSection('sectionA')" id="nav-btn-secA" class="px-4 sm:px-6 py-2.5 rounded-xl text-xs sm:text-sm font-extrabold transition-all duration-200 bg-emerald-600 text-white shadow-md shadow-emerald-600/20">
+                        <i class="fa-solid fa-book-open mr-1.5"></i> PHẦN A: KIẾN THỨC CẦN ÔN
+                    </button>
+                    <button onclick="switchMainSection('sectionB')" id="nav-btn-secB" class="px-4 sm:px-6 py-2.5 rounded-xl text-xs sm:text-sm font-extrabold transition-all duration-200 text-emerald-900 hover:bg-white/90">
+                        <i class="fa-solid fa-pen-ruler mr-1.5 text-sky-600"></i> PHẦN B: CÁC ĐỀ KIỂM TRA
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- ========================================================================= -->
+        <!-- PHẦN A: KIẾN THỨC CẦN ÔN                                                 -->
+        <!-- ========================================================================= -->
+        <section id="main-section-A" class="space-y-8">
+            
+            <!-- Hero Banner Hài Hòa Vàng Nhạt + Xanh Lá + Xanh Dương -->
+            <div class="bg-gradient-to-br from-yellow-50 via-emerald-50 to-sky-100 rounded-3xl p-7 sm:p-10 text-slate-800 shadow-md shadow-emerald-200/40 relative overflow-hidden border-2 border-emerald-200">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center relative z-10">
+                    <div class="lg:col-span-8">
+                        <div class="inline-flex items-center space-x-2 px-4 py-1.5 bg-white/90 backdrop-blur-md border border-emerald-300 text-emerald-800 font-extrabold rounded-full text-xs uppercase tracking-wider mb-4 shadow-xs">
+                            <i class="fa-solid fa-bolt text-yellow-500"></i>
+                            <span>Nền tảng Vật lý chuẩn SGK 2018 (THCS & THPT)</span>
+                        </div>
+                        <h1 class="text-3xl sm:text-5xl font-black mb-4 tracking-tight leading-tight text-slate-800">
+                            Chinh Phục <span class="text-sky-600">Vật Lý</span> <br class="hidden sm:inline"/>
+                            <span class="text-emerald-600">Dễ Dàng</span> & <span class="text-yellow-600">Sâu Sắc</span>
+                        </h1>
+                        <p class="text-base sm:text-lg font-semibold text-slate-700 leading-relaxed">
+                            Hệ thống tóm tắt lý thuyết, công thức trọng tâm và ví dụ minh họa thực tế gắn liền với đời sống cùng đôi bạn <strong class="text-yellow-700">Bé Chanh Vàng</strong> & <strong class="text-emerald-700">Bé Bơ Xanh</strong>!
+                        </p>
+                    </div>
+
+                    <!-- Mascot Cards Showcase -->
+                    <div class="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col gap-3">
+                        <div class="bg-white/95 backdrop-blur-md p-4 rounded-2xl border-2 border-yellow-200 shadow-xs flex items-center space-x-3 mascot-float">
+                            <div class="w-12 h-12 rounded-2xl bg-yellow-50 flex items-center justify-center text-3xl shrink-0 border border-yellow-200">🍋</div>
+                            <div>
+                                <div class="text-xs font-black text-yellow-700 uppercase">Bé Chanh Vàng</div>
+                                <div class="text-xs font-bold text-slate-700">"Cố lên nha, bạn làm được mà! Wow, perfect nha!"</div>
+                            </div>
+                        </div>
+                        <div class="bg-white/95 backdrop-blur-md p-4 rounded-2xl border-2 border-emerald-200 shadow-xs flex items-center space-x-3">
+                            <div class="w-12 h-12 rounded-2xl bg-emerald-50 flex items-center justify-center text-3xl shrink-0 border border-emerald-200">🥑</div>
+                            <div>
+                                <div class="text-xs font-black text-emerald-700 uppercase">Bé Bơ Xanh</div>
+                                <div class="text-xs font-bold text-slate-700">"Tớ sẽ chỉ dẫn từng bước và ví dụ thực tế cực dễ hiểu!"</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Theory Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                <!-- Topic 1 -->
+                <div class="bg-white rounded-3xl p-6 shadow-xs border-2 border-emerald-100 hover:border-emerald-400 hover:shadow-md transition duration-200">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-2xl font-black">
+                            <i class="fa-solid fa-car"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-extrabold text-slate-800">1. CƠ HỌC</h3>
+                            <p class="text-xs font-bold text-slate-400">Chuyển động & Lực</p>
+                        </div>
+                    </div>
+                    <div class="space-y-3 text-sm">
+                        <div class="bg-yellow-50/70 p-3 rounded-2xl border border-yellow-200/70">
+                            <span class="font-bold text-slate-700 block mb-1">Vận tốc & Gia tốc:</span>
+                            <div class="font-mono text-xs font-extrabold text-emerald-700 bg-white p-2 rounded-xl text-center border border-emerald-200">v = s / t  |  a = (v - v₀) / t</div>
+                        </div>
+                        <div class="bg-emerald-50/70 p-3.5 rounded-2xl border border-emerald-200/70">
+                            <span class="font-extrabold text-emerald-800 text-xs flex items-center mb-1">
+                                <span class="mr-1.5 text-base">🥑</span> Bé Bơ lấy ví dụ thực tế:
+                            </span>
+                            <p class="text-xs text-slate-700 leading-relaxed font-medium">
+                                Khi đi ô tô gặp chướng ngại vật khẩn cấp, thời gian phản ứng + quãng đường phanh xác định khoảng cách an toàn. Xe chạy càng nhanh thì quãng đường phanh tăng gấp bình phương vận tốc.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Topic 2 -->
+                <div class="bg-white rounded-3xl p-6 shadow-xs border-2 border-sky-100 hover:border-sky-400 hover:shadow-md transition duration-200">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-12 h-12 rounded-2xl bg-sky-100 text-sky-600 flex items-center justify-center text-2xl font-black">
+                            <i class="fa-solid fa-plug"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-extrabold text-slate-800">2. ĐIỆN HỌC</h3>
+                            <p class="text-xs font-bold text-slate-400">Mạch điện & Định luật Ôm</p>
+                        </div>
+                    </div>
+                    <div class="space-y-3 text-sm">
+                        <div class="bg-yellow-50/70 p-3 rounded-2xl border border-yellow-200/70">
+                            <span class="font-bold text-slate-700 block mb-1">Định luật Ôm & Công suất:</span>
+                            <div class="font-mono text-xs font-extrabold text-sky-700 bg-white p-2 rounded-xl text-center border border-sky-200">I = U / R  |  P = U . I = I² . R</div>
+                        </div>
+                        <div class="bg-sky-50/70 p-3.5 rounded-2xl border border-sky-200/70">
+                            <span class="font-extrabold text-sky-800 text-xs flex items-center mb-1">
+                                <span class="mr-1.5 text-base">🥑</span> Bé Bơ lấy ví dụ thực tế:
+                            </span>
+                            <p class="text-xs text-slate-700 leading-relaxed font-medium">
+                                Cầu chì hoặc aptomat tự động ngắt mạch khi dòng điện I vượt quá ngưỡng an toàn để phòng tránh cháy nổ do hiện tượng tỏa nhiệt Q = I²Rt quá cao trên đường dây.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Topic 3 -->
+                <div class="bg-white rounded-3xl p-6 shadow-xs border-2 border-yellow-200/80 hover:border-yellow-400 hover:shadow-md transition duration-200">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-12 h-12 rounded-2xl bg-yellow-100 text-yellow-700 flex items-center justify-center text-2xl font-black">
+                            <i class="fa-solid fa-fire-flame-curved"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-extrabold text-slate-800">3. NHIỆT HỌC</h3>
+                            <p class="text-xs font-bold text-slate-400">Nhiệt lượng & Cân bằng nhiệt</p>
+                        </div>
+                    </div>
+                    <div class="space-y-3 text-sm">
+                        <div class="bg-yellow-50/70 p-3 rounded-2xl border border-yellow-200/70">
+                            <span class="font-bold text-slate-700 block mb-1">Nhiệt lượng & Cân bằng:</span>
+                            <div class="font-mono text-xs font-extrabold text-yellow-800 bg-white p-2 rounded-xl text-center border border-yellow-200">Q = m.c.Δt  |  Q tỏa = Q thu</div>
+                        </div>
+                        <div class="bg-emerald-50/70 p-3.5 rounded-2xl border border-emerald-200/70">
+                            <span class="font-extrabold text-emerald-800 text-xs flex items-center mb-1">
+                                <span class="mr-1.5 text-base">🥑</span> Bé Bơ lấy ví dụ thực tế:
+                            </span>
+                            <p class="text-xs text-slate-700 leading-relaxed font-medium">
+                                Nước biển hạ nhiệt chậm hơn đất liền vào ban đêm vì nước có nhiệt dung riêng c rất lớn (4200 J/kg.K), giúp điều hòa không khí vùng duyên hải.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Topic 4 -->
+                <div class="bg-white rounded-3xl p-6 shadow-xs border-2 border-sky-100 hover:border-sky-400 hover:shadow-md transition duration-200">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-12 h-12 rounded-2xl bg-sky-100 text-sky-600 flex items-center justify-center text-2xl font-black">
+                            <i class="fa-solid fa-eye"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-extrabold text-slate-800">4. QUANG HỌC</h3>
+                            <p class="text-xs font-bold text-slate-400">Khúc xạ & Thấu kính</p>
+                        </div>
+                    </div>
+                    <div class="space-y-3 text-sm">
+                        <div class="bg-yellow-50/70 p-3 rounded-2xl border border-yellow-200/70">
+                            <span class="font-bold text-slate-700 block mb-1">Công thức thấu kính:</span>
+                            <div class="font-mono text-xs font-extrabold text-sky-700 bg-white p-2 rounded-xl text-center border border-sky-200">1/f = 1/d + 1/d'  |  k = -d'/d</div>
+                        </div>
+                        <div class="bg-sky-50/70 p-3.5 rounded-2xl border border-sky-200/70">
+                            <span class="font-extrabold text-sky-800 text-xs flex items-center mb-1">
+                                <span class="mr-1.5 text-base">🥑</span> Bé Bơ lấy ví dụ thực tế:
+                            </span>
+                            <p class="text-xs text-slate-700 leading-relaxed font-medium">
+                                Người bị cận thị đeo thấu kính phân kỳ để tạo ảnh ảo nằm trong giới hạn nhìn rõ của mắt, giúp nhìn rõ các vật ở xa như bảng viết trên lớp.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Topic 5 -->
+                <div class="bg-white rounded-3xl p-6 shadow-xs border-2 border-emerald-100 hover:border-emerald-400 hover:shadow-md transition duration-200">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-2xl font-black">
+                            <i class="fa-solid fa-wave-square"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-extrabold text-slate-800">5. DAO ĐỘNG & SÓNG</h3>
+                            <p class="text-xs font-bold text-slate-400">Chu kỳ, Tần số & Sóng âm</p>
+                        </div>
+                    </div>
+                    <div class="space-y-3 text-sm">
+                        <div class="bg-yellow-50/70 p-3 rounded-2xl border border-yellow-200/70">
+                            <span class="font-bold text-slate-700 block mb-1">Bước sóng & Tần số:</span>
+                            <div class="font-mono text-xs font-extrabold text-emerald-700 bg-white p-2 rounded-xl text-center border border-emerald-200">λ = v . T = v / f</div>
+                        </div>
+                        <div class="bg-emerald-50/70 p-3.5 rounded-2xl border border-emerald-200/70">
+                            <span class="font-extrabold text-emerald-800 text-xs flex items-center mb-1">
+                                <span class="mr-1.5 text-base">🥑</span> Bé Bơ lấy ví dụ thực tế:
+                            </span>
+                            <p class="text-xs text-slate-700 leading-relaxed font-medium">
+                                Dơi và cá heo phát ra sóng siêu âm (tần số > 20.000 Hz) và thu nhận sóng phản xạ để định vị con mồi và chướng ngại vật trong bóng tối.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Topic 6 -->
+                <div class="bg-white rounded-3xl p-6 shadow-xs border-2 border-yellow-200/80 hover:border-yellow-400 hover:shadow-md transition duration-200">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-12 h-12 rounded-2xl bg-yellow-100 text-yellow-700 flex items-center justify-center text-2xl font-black">
+                            <i class="fa-solid fa-sun"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-extrabold text-slate-800">6. NĂNG LƯỢNG & BẢO TOÀN</h3>
+                            <p class="text-xs font-bold text-slate-400">Cơ năng & Hiệu suất</p>
+                        </div>
+                    </div>
+                    <div class="space-y-3 text-sm">
+                        <div class="bg-yellow-50/70 p-3 rounded-2xl border border-yellow-200/70">
+                            <span class="font-bold text-slate-700 block mb-1">Cơ năng & Hiệu suất:</span>
+                            <div class="font-mono text-xs font-extrabold text-yellow-800 bg-white p-2 rounded-xl text-center border border-yellow-200">W = Wđ + Wt  |  H = (Aᵢ / Atp).100%</div>
+                        </div>
+                        <div class="bg-emerald-50/70 p-3.5 rounded-2xl border border-emerald-200/70">
+                            <span class="font-extrabold text-emerald-800 text-xs flex items-center mb-1">
+                                <span class="mr-1.5 text-base">🥑</span> Bé Bơ lấy ví dụ thực tế:
+                            </span>
+                            <p class="text-xs text-slate-700 leading-relaxed font-medium">
+                                Đập thủy điện tích nước trên cao để dự trữ thế năng trọng trường. Khi xả nước, thế năng chuyển hóa thành động năng làm quay tua-bin phát điện.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Banner CTA Switch to Phần B -->
+            <div class="bg-gradient-to-r from-emerald-500 via-teal-500 to-sky-500 rounded-3xl p-6 sm:p-8 text-white flex flex-col sm:flex-row items-center justify-between gap-4 border-2 border-emerald-400 shadow-lg shadow-emerald-500/20">
+                <div class="flex items-center space-x-4">
+                    <span class="text-4xl bg-yellow-100 w-14 h-14 rounded-2xl flex items-center justify-center shadow-xs shrink-0">🍋</span>
+                    <div>
+                        <h3 class="text-xl sm:text-2xl font-black text-white">Bé Chanh cổ vũ bạn nè: "Sẵn sàng chưa nào?"</h3>
+                        <p class="text-emerald-50 text-sm font-bold mt-1">Chuyển sang PHẦN B để chinh phục 3 bộ đề kiểm tra chuẩn cấu trúc ngay nhé!</p>
+                    </div>
+                </div>
+                <button onclick="switchMainSection('sectionB')" class="px-8 py-3.5 bg-yellow-200 text-emerald-950 hover:bg-yellow-100 font-black rounded-2xl shadow-md transition transform hover:scale-105 whitespace-nowrap border border-yellow-300">
+                    <i class="fa-solid fa-pen-to-square mr-2 text-emerald-700"></i> Sang PHẦN B Làm Bài
+                </button>
+            </div>
+
+        </section>
+
+
+        <!-- ========================================================================= -->
+        <!-- PHẦN B: CÁC ĐỀ KIỂM TRA                                                  -->
+        <!-- ========================================================================= -->
+        <section id="main-section-B" class="hidden space-y-6">
+            
+            <!-- Top Controls Bar -->
+            <div class="bg-white rounded-3xl p-5 shadow-xs border-2 border-emerald-200/80 flex flex-wrap items-center justify-between gap-4">
+                
+                <!-- Select Exams -->
+                <div class="flex items-center space-x-2 overflow-x-auto pb-1 sm:pb-0 w-full md:w-auto">
+                    <span class="text-xs font-extrabold text-emerald-700 uppercase tracking-wider hidden sm:inline mr-1">Chọn Đề:</span>
+                    <button onclick="selectExam(1)" id="exam-btn-1" class="px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-extrabold transition-all bg-emerald-600 text-white shadow-md shadow-emerald-600/20">
+                        Đề Số 01
+                    </button>
+                    <button onclick="selectExam(2)" id="exam-btn-2" class="px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-extrabold transition-all bg-emerald-50 text-emerald-900 hover:bg-emerald-100 border border-emerald-200">
+                        Đề Số 02
+                    </button>
+                    <button onclick="selectExam(3)" id="exam-btn-3" class="px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-extrabold transition-all bg-emerald-50 text-emerald-900 hover:bg-emerald-100 border border-emerald-200">
+                        Đề Số 03
+                    </button>
+                </div>
+
+                <!-- Stopwatch Display (Tính thời gian làm bài) -->
+                <div class="flex items-center space-x-3 w-full sm:w-auto justify-between sm:justify-end">
+                    <div class="bg-yellow-50/90 border-2 border-yellow-200 px-4 py-2 rounded-2xl flex items-center space-x-3">
+                        <i class="fa-solid fa-stopwatch text-emerald-600 text-xl"></i>
+                        <div>
+                            <div class="text-[10px] text-slate-600 font-extrabold uppercase tracking-wider">Thời gian làm bài</div>
+                            <div id="stopwatch-display" class="font-mono text-xl font-black text-slate-800">00:00</div>
+                        </div>
+                    </div>
+                    
+                    <button id="btn-toggle-timer" onclick="toggleTimer()" class="p-3 rounded-2xl bg-sky-50 hover:bg-sky-100 text-sky-800 font-bold border border-sky-200 transition" title="Tạm dừng/Tiếp tục">
+                        <i id="timer-icon" class="fa-solid fa-pause"></i>
+                    </button>
+                    
+                    <button onclick="submitExam()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold px-6 py-3 rounded-2xl shadow-md shadow-emerald-600/20 transition transform hover:scale-105">
+                        <i class="fa-solid fa-check mr-1.5"></i> Nộp Bài
+                    </button>
+                </div>
+
+            </div>
+
+            <!-- Quiz Layout Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+                <!-- Questions Area (8 Cols) -->
+                <div class="lg:col-span-8 space-y-6">
+
+                    <!-- Header Exam Title -->
+                    <div class="bg-white rounded-3xl p-6 shadow-xs border-2 border-emerald-100 relative overflow-hidden">
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                            <span class="px-3.5 py-1 bg-yellow-100 text-yellow-800 font-extrabold rounded-full text-xs uppercase tracking-wider border border-yellow-200">
+                                Thang Điểm 400 (4 Phần x 100đ)
+                            </span>
+                            <span id="current-mode-badge" class="px-3.5 py-1 bg-sky-100 text-sky-800 font-extrabold rounded-full text-xs border border-sky-200">
+                                Đang làm: Phần 1 (Nhận Biết - Thông Hiểu)
+                            </span>
+                        </div>
+                        <h2 id="exam-title" class="text-2xl font-black text-slate-800 mt-1">
+                            Đề Số 01: Ôn Tập Tổng Hợp Cơ Học & Điện Học Thực Tế
+                        </h2>
+                        <p id="exam-subtitle" class="text-slate-600 text-xs sm:text-sm font-semibold mt-1">
+                            Hãy hoàn thành từng phần theo thứ tự hoặc chọn chuyển tiếp ở cuối mỗi phần nhé!
+                        </p>
+
+                        <!-- Score Summary Card & Evaluation (Sau khi nộp bài) -->
+                        <div id="result-summary-card" class="hidden mt-6 space-y-4">
+                            <!-- Tổng Điểm & Thời Gian -->
+                            <div class="bg-gradient-to-r from-emerald-500 via-teal-500 to-sky-500 text-white rounded-3xl p-6 shadow-lg border-2 border-emerald-400">
+                                <div class="flex flex-wrap items-center justify-between gap-4">
+                                    <div>
+                                        <span class="text-xs text-emerald-100 block font-black uppercase tracking-wider">Tổng Điểm Đạt Được</span>
+                                        <div class="text-4xl font-black text-yellow-200">
+                                            <span id="total-score-display">0</span> <span class="text-base font-extrabold text-white">/ 400</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex space-x-3">
+                                        <div class="text-center px-4 py-2 bg-white/95 backdrop-blur-md rounded-2xl border border-emerald-200">
+                                            <div class="text-[11px] font-extrabold text-emerald-800">Số câu đúng</div>
+                                            <div id="correct-count-display" class="font-black text-slate-800 text-lg">0/70</div>
+                                        </div>
+                                        <div class="text-center px-4 py-2 bg-white/95 backdrop-blur-md rounded-2xl border border-sky-200">
+                                            <div class="text-[11px] font-extrabold text-sky-800">Thời gian</div>
+                                            <div id="final-time-display" class="font-black text-sky-700 text-lg">00:00</div>
+                                        </div>
+                                    </div>
+                                    <button onclick="scrollToQuestions()" class="bg-yellow-200 hover:bg-yellow-100 text-emerald-950 font-black text-xs sm:text-sm px-5 py-3 rounded-2xl shadow-md transition border border-yellow-300">
+                                        <i class="fa-solid fa-list-check mr-1 text-emerald-700"></i> Xem Chữa Bài Chi Tiết
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- KHỐI ĐÁNH GIÁ KẾT QUẢ & LỜI ĐỘNG VIÊN CỦA BÉ CHANH VÀNG -->
+                            <div class="bg-white rounded-3xl p-6 border-2 border-emerald-200 shadow-md space-y-4">
+                                <div class="flex items-center space-x-3 pb-3 border-b border-emerald-100">
+                                    <div class="w-11 h-11 rounded-2xl bg-yellow-50 border border-yellow-200 flex items-center justify-center text-2xl">
+                                        🍋
+                                    </div>
+                                    <div>
+                                        <h3 class="text-lg font-black text-slate-800">GÓC NHẬN XÉT & ĐỘNG VIÊN TỪ BÉ CHANH</h3>
+                                        <p class="text-xs font-bold text-emerald-700">Phân tích điểm yếu & lộ trình ôn tập thông minh</p>
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <!-- Phần sai nhiều nhất -->
+                                    <div class="bg-yellow-50/80 p-4 rounded-2xl border border-yellow-200">
+                                        <span class="text-xs font-black text-yellow-800 uppercase tracking-wider block mb-1">
+                                            <i class="fa-solid fa-circle-exclamation mr-1.5 text-yellow-600"></i> Phần sai nhiều nhất:
+                                        </span>
+                                        <div id="weakest-section-title" class="font-black text-slate-800 text-base">
+                                            Phần 1: Nhận Biết - Thông Hiểu
+                                        </div>
+                                    </div>
+
+                                    <!-- Cần ôn thêm những gì -->
+                                    <div class="bg-sky-50/80 p-4 rounded-2xl border border-sky-200">
+                                        <span class="text-xs font-black text-sky-800 uppercase tracking-wider block mb-1">
+                                            <span class="mr-1">🥑</span> Bé Bơ khuyên bạn cần ôn thêm:
+                                        </span>
+                                        <div id="weakest-section-advice" class="text-xs text-slate-700 font-bold leading-relaxed">
+                                            Nắm chắc định nghĩa, thuộc công thức cơ bản và làm các bài tập nhận biết.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Lời động viên của Bé Chanh Vàng -->
+                                <div class="bg-emerald-50/80 p-4 rounded-2xl border-2 border-emerald-200 flex items-start space-x-3">
+                                    <span class="text-2xl shrink-0">🍋</span>
+                                    <div>
+                                        <span class="text-xs font-black text-emerald-800 uppercase tracking-wider block mb-0.5">Bé Chanh Vàng nhắn nhủ:</span>
+                                        <p id="encouragement-message" class="text-xs sm:text-sm font-extrabold text-slate-800 leading-relaxed">
+                                            Wow, cố gắng lên nha! Mỗi lỗi sai hôm nay là một bài học giúp bạn tiến xa hơn vào ngày mai!
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Filter Banner khi đã nộp bài (Cho phép xem tất cả 4 phần hoặc lọc từng phần) -->
+                    <div id="post-submit-filter-bar" class="hidden flex items-center space-x-2 overflow-x-auto pb-2 custom-scrollbar">
+                        <button onclick="setSubmittedView('all')" id="sub-tab-all" class="px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-black whitespace-nowrap bg-emerald-600 text-white shadow-xs">
+                            Tất Cả 4 Phần (70 Câu)
+                        </button>
+                        <button onclick="setSubmittedView('part1')" id="sub-tab-part1" class="px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-extrabold whitespace-nowrap bg-white text-slate-700 border border-emerald-200 hover:bg-emerald-50">
+                            Phần 1: NB-TH
+                        </button>
+                        <button onclick="setSubmittedView('part2')" id="sub-tab-part2" class="px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-extrabold whitespace-nowrap bg-white text-slate-700 border border-emerald-200 hover:bg-emerald-50">
+                            Phần 2: Vận Dụng
+                        </button>
+                        <button onclick="setSubmittedView('part3')" id="sub-tab-part3" class="px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-extrabold whitespace-nowrap bg-white text-slate-700 border border-emerald-200 hover:bg-emerald-50">
+                            Phần 3: Vận Dụng Cao
+                        </button>
+                        <button onclick="setSubmittedView('part4')" id="sub-tab-part4" class="px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-extrabold whitespace-nowrap bg-white text-slate-700 border border-emerald-200 hover:bg-emerald-50">
+                            Phần 4: Trả Lời Ngắn
+                        </button>
+                    </div>
+
+                    <!-- Questions Container -->
+                    <div id="questions-wrapper" class="space-y-6">
+                        <!-- Rendered by JS -->
+                    </div>
+
+                    <!-- ========================================================================= -->
+                    <!-- KHU VỰC ĐIỀU HƯỚNG TƯƠNG TÁC Ở CUỐI MỖI PHẦN (HÀI HÒA XANH + VÀNG NHẠT)    -->
+                    <!-- ========================================================================= -->
+                    <div id="part-bottom-navigation" class="bg-gradient-to-br from-yellow-50 via-emerald-50 to-sky-50 rounded-3xl p-6 sm:p-8 border-2 border-emerald-200 shadow-sm space-y-5">
+                        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-emerald-200/80 pb-4">
+                            <div class="flex items-center space-x-3">
+                                <div class="flex -space-x-2">
+                                    <span class="w-11 h-11 rounded-2xl bg-yellow-100 border-2 border-white flex items-center justify-center text-2xl shadow-xs">🍋</span>
+                                    <span class="w-11 h-11 rounded-2xl bg-emerald-100 border-2 border-white flex items-center justify-center text-2xl shadow-xs">🥑</span>
+                                </div>
+                                <div>
+                                    <h4 id="bottom-nav-title" class="text-base sm:text-lg font-black text-slate-800">
+                                        Bạn đã hoàn thành Phần 1: Nhận Biết - Thông Hiểu!
+                                    </h4>
+                                    <p id="bottom-nav-subtitle" class="text-xs sm:text-sm font-bold text-emerald-800">
+                                        Bé Chanh: "Wow, perfect nha! Chọn phần tiếp theo bạn muốn chinh phục bên dưới nhé!"
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Các nút lựa chọn chuyển tiếp sang Phần 2, 3, 4 hoặc Nộp bài -->
+                        <div id="bottom-nav-buttons" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <!-- Rendered dynamically by JS based on currentTab -->
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Sidebar Navigator (4 Cols) -->
+                <aside class="lg:col-span-4 space-y-6">
+                    <div class="bg-white rounded-3xl p-6 shadow-xs border-2 border-emerald-100 sticky top-24">
+                        <div class="flex items-center justify-between pb-4 border-b border-emerald-100 mb-4">
+                            <h3 class="font-extrabold text-slate-800 flex items-center text-base">
+                                <i class="fa-solid fa-grid-2 text-emerald-500 mr-2"></i> Danh Sách Câu Hỏi
+                            </h3>
+                            <span id="answered-badge" class="text-xs font-extrabold px-3 py-1 bg-yellow-100 text-yellow-900 rounded-full border border-yellow-200">
+                                Đã làm: 0/70
+                            </span>
+                        </div>
+
+                        <!-- Quick Part Switcher Pills in Sidebar -->
+                        <div class="grid grid-cols-4 gap-1.5 mb-4 bg-emerald-50/80 p-1.5 rounded-2xl border border-emerald-200">
+                            <button onclick="switchTab('part1')" id="side-pill-part1" class="py-1.5 rounded-xl text-xs font-black bg-emerald-600 text-white shadow-xs">P1</button>
+                            <button onclick="switchTab('part2')" id="side-pill-part2" class="py-1.5 rounded-xl text-xs font-extrabold text-emerald-900 hover:bg-emerald-200/60">P2</button>
+                            <button onclick="switchTab('part3')" id="side-pill-part3" class="py-1.5 rounded-xl text-xs font-extrabold text-emerald-900 hover:bg-emerald-200/60">P3</button>
+                            <button onclick="switchTab('part4')" id="side-pill-part4" class="py-1.5 rounded-xl text-xs font-extrabold text-emerald-900 hover:bg-emerald-200/60">P4</button>
+                        </div>
+
+                        <div class="mb-3 text-xs font-extrabold text-slate-500 uppercase tracking-wider flex justify-between">
+                            <span id="sidebar-part-label">Phần 1: Nhận Biết</span>
+                            <span class="text-emerald-600 font-black">100 Điểm</span>
+                        </div>
+
+                        <!-- Grid Navigator Buttons -->
+                        <div id="quiz-grid" class="grid grid-cols-5 gap-2.5 max-h-[320px] overflow-y-auto p-1 custom-scrollbar">
+                            <!-- Rendered by JS -->
+                        </div>
+
+                        <!-- Mascot Mini Cheer Box in Sidebar -->
+                        <div class="mt-4 p-3.5 rounded-2xl bg-yellow-50/90 border border-yellow-200 flex items-center space-x-2.5">
+                            <span class="text-2xl">🍋</span>
+                            <p id="sidebar-mascot-tip" class="text-xs font-bold text-slate-700 leading-snug">
+                                "Cố lên nha! Đọc kỹ đề và chọn đáp án tự tin nhất nhé!"
+                            </p>
+                        </div>
+
+                        <!-- Detailed score breakdown after submit -->
+                        <div id="section-score-breakdown" class="hidden mt-5 pt-4 border-t border-emerald-100 space-y-2">
+                            <h4 class="text-xs font-extrabold text-emerald-800 uppercase tracking-wider mb-2">Bảng Điểm Chi Tiết</h4>
+                            <div class="flex justify-between items-center text-xs py-1 font-bold">
+                                <span class="text-slate-600">Phần 1 (NB-TH):</span>
+                                <span id="score-p1" class="text-slate-800 font-black">0/100</span>
+                            </div>
+                            <div class="flex justify-between items-center text-xs py-1 font-bold">
+                                <span class="text-slate-600">Phần 2 (Vận dụng):</span>
+                                <span id="score-p2" class="text-slate-800 font-black">0/100</span>
+                            </div>
+                            <div class="flex justify-between items-center text-xs py-1 font-bold">
+                                <span class="text-slate-600">Phần 3 (Vận dụng cao):</span>
+                                <span id="score-p3" class="text-slate-800 font-black">0/100</span>
+                            </div>
+                            <div class="flex justify-between items-center text-xs py-1 font-bold">
+                                <span class="text-slate-600">Phần 4 (Trả lời ngắn):</span>
+                                <span id="score-p4" class="text-slate-800 font-black">0/100</span>
+                            </div>
+                        </div>
+
+                        <div class="mt-5 pt-4 border-t border-emerald-100 flex flex-col space-y-2">
+                            <button onclick="submitExam()" class="w-full py-3.5 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-sm shadow-md shadow-emerald-600/20 transition flex items-center justify-center space-x-2">
+                                <i class="fa-solid fa-check-circle"></i>
+                                <span>Nộp Bài & Chấm Điểm</span>
+                            </button>
+                            <button onclick="resetCurrentExam()" class="w-full py-2.5 rounded-2xl bg-sky-50 hover:bg-sky-100 text-sky-900 font-bold text-xs transition border border-sky-200">
+                                <i class="fa-solid fa-rotate-left mr-1"></i> Làm Lại Đề Này
+                            </button>
+                        </div>
+
+                    </div>
+                </aside>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Custom Modal Notification (Thay thế alert/confirm để trải nghiệm mượt mà) -->
+    <div id="custom-modal" class="hidden fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 border-2 border-emerald-200 shadow-2xl space-y-4 transform transition-all">
+            <div class="flex items-center space-x-3">
+                <span id="modal-mascot" class="text-3xl">🍋</span>
+                <h3 id="modal-title" class="text-lg font-black text-slate-800">Thông báo từ Bé Chanh</h3>
+            </div>
+            <p id="modal-message" class="text-sm font-semibold text-slate-600 leading-relaxed"></p>
+            <div id="modal-actions" class="flex justify-end space-x-2 pt-2">
+                <!-- Buttons injected via JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t-2 border-emerald-100 py-6 mt-auto text-center text-xs font-bold text-slate-500">
+        <div class="max-w-7xl mx-auto px-4">
+            <p class="flex items-center justify-center space-x-2 text-slate-700">
+                <span>🍋 Chinh Phục Vật Lý - Bé Chanh & Bé Bơ 🥑 - Chuẩn SGK 2018</span>
+            </p>
+        </div>
+    </footer>
+
+
+    <!-- ========================================================================= -->
+    <!-- SCRIPT LOGIC: DATA, EXAMS, SMART PART NAVIGATION & MASCOTS                -->
+    <!-- ========================================================================= -->
+    <script>
+        const examsData = {
+            1: {
+                title: "Đề Số 01: Ôn Tập Tổng Hợp Cơ Học & Điện Học Thực Tế",
+                parts: {
+                    part1: generateQuestions(1, 'part1'),
+                    part2: generateQuestions(1, 'part2'),
+                    part3: generateQuestions(1, 'part3'),
+                    part4: generateQuestions(1, 'part4')
+                }
+            },
+            2: {
+                title: "Đề Số 02: Nhiệt Học, Quang Học & Hiện Tượng Vật Lý Đời Sống",
+                parts: {
+                    part1: generateQuestions(2, 'part1'),
+                    part2: generateQuestions(2, 'part2'),
+                    part3: generateQuestions(2, 'part3'),
+                    part4: generateQuestions(2, 'part4')
+                }
+            },
+            3: {
+                title: "Đề Số 03: Động Lực Học, Năng Lượng Tái Tạo & Định Luật Bảo Toàn",
+                parts: {
+                    part1: generateQuestions(3, 'part1'),
+                    part2: generateQuestions(3, 'part2'),
+                    part3: generateQuestions(3, 'part3'),
+                    part4: generateQuestions(3, 'part4')
+                }
+            }
+        };
+
+        function generateQuestions(examId, part) {
+            let list = [];
+            if (part === 'part1') {
+                for (let i = 1; i <= 20; i++) {
+                    const item = getPart1Content(examId, i);
+                    list.push({
+                        id: `q_${part}_${i}`,
+                        num: i,
+                        partKey: 'part1',
+                        partName: 'Phần 1: Nhận Biết - Thông Hiểu',
+                        points: 5,
+                        question: item.q,
+                        options: item.opts,
+                        correct: item.ans,
+                        explanation: item.exp,
+                        example: item.ex
+                    });
+                }
+            } else if (part === 'part2') {
+                for (let i = 1; i <= 20; i++) {
+                    const item = getPart2Content(examId, i);
+                    list.push({
+                        id: `q_${part}_${i}`,
+                        num: i,
+                        partKey: 'part2',
+                        partName: 'Phần 2: Vận Dụng',
+                        points: 5,
+                        question: item.q,
+                        options: item.opts,
+                        correct: item.ans,
+                        explanation: item.exp,
+                        example: item.ex
+                    });
+                }
+            } else if (part === 'part3') {
+                for (let i = 1; i <= 20; i++) {
+                    const item = getPart3Content(examId, i);
+                    list.push({
+                        id: `q_${part}_${i}`,
+                        num: i,
+                        partKey: 'part3',
+                        partName: 'Phần 3: Vận Dụng Cao',
+                        points: 5,
+                        question: item.q,
+                        options: item.opts,
+                        correct: item.ans,
+                        explanation: item.exp,
+                        example: item.ex
+                    });
+                }
+            } else if (part === 'part4') {
+                for (let i = 1; i <= 10; i++) {
+                    const item = getPart4Content(examId, i);
+                    list.push({
+                        id: `q_${part}_${i}`,
+                        num: i,
+                        partKey: 'part4',
+                        partName: 'Phần 4: Trả Lời Ngắn',
+                        points: 10,
+                        question: item.q,
+                        correct: item.ans,
+                        unit: item.unit,
+                        explanation: item.exp,
+                        example: item.ex
+                    });
+                }
+            }
+            return list;
+        }
+
+        // --- Question Content Generators ---
+        function getPart1Content(exam, i) {
+            const list = [
+                { 
+                    q: "Đơn vị đo cường độ dòng điện trong hệ đo lường chuẩn SI là gì?", 
+                    opts: ["A. Ampe (A)", "B. Vôn (V)", "C. Ôm (Ω)", "D. Oát (W)"], 
+                    ans: 0, 
+                    exp: "Theo hệ đo lường quốc tế SI, cường độ dòng điện đại diện cho số lượng điện tích di chuyển qua tiết diện dây trong 1 giây, có đơn vị là Ampe (A).",
+                    ex: "Mẹo nhớ: Hãy tưởng tượng dòng điện như dòng nước chạy trong ống. Cường độ dòng điện (A) chính là lượng nước chảy ra trong 1 giây. Các thiết bị gia dụng như quạt máy thường dùng dòng 0.2A - 0.5A."
+                },
+                { 
+                    q: "Hiện tượng ánh sáng bị gãy góc tại mặt phân cách giữa hai môi trường trong suốt gọi là gì?", 
+                    opts: ["A. Phản xạ ánh sáng", "B. Khúc xạ ánh sáng", "C. Tán sắc ánh sáng", "D. Nhấp nháy ánh sáng"], 
+                    ans: 1, 
+                    exp: "Hiện tượng khúc xạ ánh sáng xảy ra khi tia sáng đổi hướng đột ngột lúc truyền xiên góc qua mặt phân cách giữa 2 môi trường chiết quang khác nhau.",
+                    ex: "Ví dụ thực tế: Cắm một chiếc ống hút hoặc chiếc đũa vào ly nước tinh khiết, ta thấy đoạn đũa ở mặt nước như bị gãy khúc, đó chính là hiện tượng khúc xạ ánh sáng!"
+                },
+                { 
+                    q: "Công thức tính điện trở của dây dẫn hình trụ đồng chất là:", 
+                    opts: ["A. R = ρ . l / S", "B. R = ρ . S / l", "C. R = S / (ρ . l)", "D. R = l / (ρ . S)"], 
+                    ans: 0, 
+                    exp: "Điện trở R tỷ lệ thuận với chiều dài l, tỷ lệ nghịch với tiết diện S và phụ thuộc vào điện trở suất ρ của chất làm dây.",
+                    ex: "Ví dụ thực tế: Đường dây điện tải đi xa thường chọn dây dẫn có tiết diện S lớn và làm bằng đồng/nhôm (điện trở suất ρ nhỏ) để giảm điện trở R, giúp tránh thất thoát điện năng lượng tỏa nhiệt."
+                },
+                { 
+                    q: "Đại lượng nào đặc trưng cho mức độ nhanh hay chậm của chuyển động?", 
+                    opts: ["A. Quãng đường", "B. Vận tốc", "C. Gia tốc", "D. Thời gian"], 
+                    ans: 1, 
+                    exp: "Vận tốc v = s / t đặc trưng cho độ nhanh hay chậm và hướng chuyển động của vật.",
+                    ex: "Ví dụ thực tế: Đồng hồ tốc độ (tốc độ kế) trên tay lái xe máy hiển thị vận tốc tức thời tính bằng km/h, giúp người lái kiểm soát an toàn giao thông."
+                },
+                {
+                    q: "Nhiệt dung riêng của một chất cho biết điều gì?",
+                    opts: ["A. Nhiệt lượng cần thiết để làm 1 kg chất đó tăng thêm 1°C", "B. Nhiệt độ nóng chảy của chất đó", "C. Khối lượng riêng của chất đó", "D. Nhiệt lượng tỏa ra khi đốt cháy hoàn toàn 1 kg nhiên liệu"],
+                    ans: 0,
+                    exp: "Nhiệt dung riêng c (đơn vị J/kg.K) là nhiệt lượng cần truyền cho 1 kg chất đó để nhiệt độ tăng thêm 1°C (hoặc 1 K).",
+                    ex: "Ví dụ thực tế: Nước có nhiệt dung riêng rất cao (4200 J/kg.K) nên thường được dùng làm chất làm mát trong bộ tản nhiệt của động cơ ô tô."
+                }
+            ];
+            return list[(i - 1) % list.length];
+        }
+
+        function getPart2Content(exam, i) {
+            const list = [
+                { 
+                    q: "Một ấm điện 220V - 1000W hoạt động bình thường. Nhiệt lượng tỏa ra trong 10 phút sử dụng là bao nhiêu?", 
+                    opts: ["A. 600.000 J", "B. 10.000 J", "C. 60.000 J", "D. 100.000 J"], 
+                    ans: 0, 
+                    exp: "Áp dụng công thức tính nhiệt lượng Q = P . t = 1000W . (10 phút . 60 giây) = 600.000 J (hoặc 600 kJ).",
+                    ex: "Ví dụ thực tế: 600.000 Joule điện năng này chính là năng lượng đủ để đun sôi khoảng 1.8 lít nước từ nhiệt độ phòng (25°C) lên 100°C trong thực tế nấu nướng hàng ngày!"
+                },
+                { 
+                    q: "Tại sao khi di chuyển xe máy trên đường mưa ướt, tài xế luôn phải chủ động giảm tốc độ?", 
+                    opts: ["A. Để giảm bớt lực cản không khí", "B. Lực ma sát giữa lốp xe và mặt đường giảm mạnh khi có nước, giảm tốc để tránh trượt xe", "C. Vì khối lượng xe giảm đi", "D. Để triệt tiêu quán tính của xe"], 
+                    ans: 1, 
+                    exp: "Lớp nước mưa đóng vai trò như chất bôi trơn làm giảm hệ số ma sát trượt giữa lốp xe và mặt đường, làm kéo dài quãng đường phanh.",
+                    ex: "Mẹo an toàn: Lốp xe có các rãnh chẻ là để thoát nước nhanh. Khi rãnh lốp bị mòn, lực ma sát bám đường giảm mạnh, nguy cơ trượt bánh khi phanh gấp tăng cao gấp 3 lần."
+                },
+                { 
+                    q: "Kính lúp hoặc kính phóng đại có tiêu cự f = 10 cm. Để quan sát ảnh ảo phóng to, cần đặt vật cách kính bao nhiêu?", 
+                    opts: ["A. Khoảng 6 cm (trong khoảng tiêu cự d < f)", "B. 20 cm", "C. Trên 30 cm", "D. Đặt ở vị trí bất kỳ"], 
+                    ans: 0, 
+                    exp: "Thấu kính hội tụ cho ảnh ảo phóng to cùng chiều với vật khi và chỉ khi vật nằm trong khoảng tiêu cự (d < f = 10 cm).",
+                    ex: "Ví dụ thực tế: Khi thợ sửa đồng hồ hoặc thợ kim hoàn dùng kính lúp quan sát linh kiện nhỏ, họ luôn đưa kính lại gần vật sao cho khoảng cách nhỏ hơn tiêu cự của kính."
+                },
+                {
+                    q: "Một ô tô đang chạy với vận tốc 54 km/h thì hãm phanh chuyển động chậm dần đều và dừng lại sau 5 giây. Gia tốc của xe có độ lớn là:",
+                    opts: ["A. 3 m/s²", "B. 10.8 m/s²", "C. 5 m/s²", "D. 1.5 m/s²"],
+                    ans: 0,
+                    exp: "Đổi đơn vị: v₀ = 54 km/h = 15 m/s. Khi dừng lại v = 0. Độ lớn gia tốc |a| = |0 - 15| / 5 = 3 m/s².",
+                    ex: "Mẹo ghi nhớ: Để đổi nhanh từ km/h sang m/s, bạn chỉ cần lấy số đó chia cho 3.6 (54 / 3.6 = 15 m/s)!"
+                }
+            ];
+            return list[(i - 1) % list.length];
+        }
+
+        function getPart3Content(exam, i) {
+            const list = [
+                { 
+                    q: "Hệ thống pin mặt trời công suất 3 kW, trung bình 5 giờ nắng/ngày, hiệu suất bộ biến tần (inverter) là 90%. Tổng điện năng thu được trong 30 ngày là bao nhiêu?", 
+                    opts: ["A. 405 kWh", "B. 450 kWh", "C. 350 kWh", "D. 500 kWh"], 
+                    ans: 0, 
+                    exp: "Điện năng lý thuyết = 3 kW * 5h * 30 = 450 kWh. Điện năng thực tế thu được = 450 * 90% = 405 kWh.",
+                    ex: "Ví dụ thực tế: 405 kWh (chữ điện) này đủ cung cấp toàn bộ điện sinh hoạt hàng tháng cho một hộ gia đình 4 người với tủ lạnh, điều hòa và máy giặt."
+                },
+                { 
+                    q: "Hai người cùng khiêng một thùng hàng 60 kg bằng đòn gánh dài 1.5 m. Thùng hàng treo cách vai người thứ nhất 0.6 m. Lực người thứ nhất chịu là bao nhiêu? (g = 10 m/s²)", 
+                    opts: ["A. 360 N", "B. 240 N", "C. 600 N", "D. 180 N"], 
+                    ans: 0, 
+                    exp: "Tổng trọng lượng P = m.g = 600N. Áp dụng quy tắc Momen lực: F1 . d1 = F2 . d2 => F1 / F2 = 0.9 / 0.6 = 1.5 => F1 = 360 N.",
+                    ex: "Ví dụ thực tế: Trong đời sống khi khiêng nặng bằng đòn gánh, người nào đứng gần vật treo hơn thì sẽ phải gánh lực nặng hơn. Muốn chia đều lực thì vật phải treo đúng chính giữa đòn."
+                },
+                {
+                    q: "Dùng bếp điện có hiệu suất 80% để đun sôi 2 lít nước từ 20°C lên 100°C. Biết nhiệt dung riêng của nước c = 4200 J/kg.K. Điện năng tiêu thụ của bếp là:",
+                    opts: ["A. 840 kJ", "B. 672 kJ", "C. 537.6 kJ", "D. 1000 kJ"],
+                    ans: 0,
+                    exp: "Nhiệt lượng có ích Qᵢ = m.c.Δt = 2 * 4200 * (100 - 20) = 672.000 J = 672 kJ. Điện năng tiêu thụ A = Qᵢ / H = 672 / 0.8 = 840 kJ.",
+                    ex: "Ví dụ thực tế: Bếp từ có hiệu suất cao (lên tới 90%) nên đun nước nhanh sôi và tiết kiệm điện hơn nhiều so với bếp hồng ngoại hay bếp điện dây mayso."
+                }
+            ];
+            return list[(i - 1) % list.length];
+        }
+
+        function getPart4Content(exam, i) {
+            const list = [
+                { 
+                    q: "Tính công suất điện (theo kW) của máy điều hòa tiêu thụ hết 3.6 kWh điện năng trong 2 giờ chạy liên tục.", 
+                    ans: "1.8", 
+                    unit: "kW", 
+                    exp: "Áp dụng công thức công suất P = E / t = 3.6 kWh / 2h = 1.8 kW (tương đương 1800W).",
+                    ex: "Ví dụ thực tế: Điều hòa công suất 1.8 kW (khoảng 2 HP - 2 ngựa) thường dùng làm mát cho phòng ngủ lớn diện tích từ 20m² đến 25m²."
+                },
+                { 
+                    q: "Một xe đạp di chuyển quãng đường 12 km hết thời gian 30 phút. Vận tốc trung bình của xe là bao nhiêu km/h?", 
+                    ans: "24", 
+                    unit: "km/h", 
+                    exp: "Đổi 30 phút = 0.5 giờ. Vận tốc v = s / t = 12 / 0.5 = 24 km/h.",
+                    ex: "Ví dụ thực tế: 24 km/h là tốc độ đạp xe khá nhanh của học sinh THPT khi di chuyển trên đường thưa vắng."
+                },
+                { 
+                    q: "Tính điện trở tương đương của đoạn mạch gồm 2 điện trở R1 = 10 Ω và R2 = 15 Ω mắc song song.", 
+                    ans: "6", 
+                    unit: "Ω", 
+                    exp: "Công thức mắc song song: R_td = (R1 . R2) / (R1 + R2) = (10 . 15) / (10 + 15) = 150 / 25 = 6 Ω.",
+                    ex: "Mẹo ghi nhớ: Khi mắc song song nhiều điện trở, điện trở tương đương của toàn mạch luôn luôn nhỏ hơn điện trở của từng nhánh thành phần (6 Ω < 10 Ω)."
+                },
+                {
+                    q: "Một vật có khối lượng 5 kg rơi tự do từ độ cao 20 m xuống đất. Lấy g = 10 m/s². Tính thế năng trọng trường của vật tại vị trí bắt đầu rơi (theo Jun).",
+                    ans: "1000",
+                    unit: "J",
+                    exp: "Công thức thế năng trọng trường Wt = m . g . h = 5 * 10 * 20 = 1000 J.",
+                    ex: "Ví dụ thực tế: Khi vật rơi chạm đất, toàn bộ 1000 J thế năng này đã chuyển hóa thành động năng cực đại ngay trước lúc va chạm."
+                }
+            ];
+            return list[(i - 1) % list.length];
+        }
+
+        // --- State Management ---
+        let currentMainSection = 'sectionA';
+        let currentExamId = 1;
+        let currentTab = 'part1'; // Khi làm bài luôn bắt đầu ở Phần 1
+        let submittedViewMode = 'all'; // Khi nộp bài mặc định hiển thị tất cả 4 phần
+        let userAnswers = { 1: {}, 2: {}, 3: {} };
+        let isSubmitted = false;
+
+        // Stopwatch Timer Variables
+        let stopwatchSeconds = 0;
+        let stopwatchInterval = null;
+        let isTimerRunning = false;
+
+        const partInfo = {
+            part1: { title: 'Phần 1: Nhận Biết - Thông Hiểu', short: 'Phần 1 (NB-TH)', count: 20, points: 100 },
+            part2: { title: 'Phần 2: Vận Dụng', short: 'Phần 2 (Vận Dụng)', count: 20, points: 100 },
+            part3: { title: 'Phần 3: Vận Dụng Cao', short: 'Phần 3 (Vận Dụng Cao)', count: 20, points: 100 },
+            part4: { title: 'Phần 4: Trả Lời Ngắn', short: 'Phần 4 (Trả Lời Ngắn)', count: 10, points: 100 }
+        };
+
+        window.onload = function() {
+            loadExam(currentExamId);
+        };
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Custom Modal Helper
+        function showCustomModal(mascot, title, message, buttons) {
+            document.getElementById('modal-mascot').innerText = mascot;
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-message').innerText = message;
+            
+            const actionsDiv = document.getElementById('modal-actions');
+            actionsDiv.innerHTML = '';
+            buttons.forEach(btn => {
+                const b = document.createElement('button');
+                b.className = btn.className;
+                b.innerText = btn.text;
+                b.onclick = () => {
+                    closeCustomModal();
+                    if (btn.onClick) btn.onClick();
+                };
+                actionsDiv.appendChild(b);
+            });
+
+            document.getElementById('custom-modal').classList.remove('hidden');
+        }
+
+        function closeCustomModal() {
+            document.getElementById('custom-modal').classList.add('hidden');
+        }
+
+        function switchMainSection(section) {
+            currentMainSection = section;
+            const secA = document.getElementById('main-section-A');
+            const secB = document.getElementById('main-section-B');
+            const btnA = document.getElementById('nav-btn-secA');
+            const btnB = document.getElementById('nav-btn-secB');
+
+            if (section === 'sectionA') {
+                secA.classList.remove('hidden');
+                secB.classList.add('hidden');
+                btnA.className = "px-4 sm:px-6 py-2.5 rounded-xl text-xs sm:text-sm font-extrabold transition-all duration-200 bg-emerald-600 text-white shadow-md shadow-emerald-600/20";
+                btnB.className = "px-4 sm:px-6 py-2.5 rounded-xl text-xs sm:text-sm font-extrabold transition-all duration-200 text-emerald-900 hover:bg-white/90";
+                pauseTimer();
+            } else {
+                secA.classList.add('hidden');
+                secB.classList.remove('hidden');
+                btnB.className = "px-4 sm:px-6 py-2.5 rounded-xl text-xs sm:text-sm font-extrabold transition-all duration-200 bg-emerald-600 text-white shadow-md shadow-emerald-600/20";
+                btnA.className = "px-4 sm:px-6 py-2.5 rounded-xl text-xs sm:text-sm font-extrabold transition-all duration-200 text-emerald-900 hover:bg-white/90";
+                if (!isSubmitted) {
+                    startTimer();
+                }
+            }
+            scrollToTop();
+        }
+
+        // Stopwatch Timer Logic
+        function startTimer() {
+            if (isTimerRunning) return;
+            isTimerRunning = true;
+            document.getElementById('timer-icon').className = 'fa-solid fa-pause';
+            stopwatchInterval = setInterval(() => {
+                stopwatchSeconds++;
+                updateStopwatchDisplay();
+            }, 1000);
+        }
+
+        function pauseTimer() {
+            isTimerRunning = false;
+            clearInterval(stopwatchInterval);
+            document.getElementById('timer-icon').className = 'fa-solid fa-play';
+        }
+
+        function toggleTimer() {
+            if (isTimerRunning) {
+                pauseTimer();
+            } else {
+                startTimer();
+            }
+        }
+
+        function resetTimer() {
+            pauseTimer();
+            stopwatchSeconds = 0;
+            updateStopwatchDisplay();
+        }
+
+        function updateStopwatchDisplay() {
+            const m = Math.floor(stopwatchSeconds / 60);
+            const s = stopwatchSeconds % 60;
+            const formatted = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+            document.getElementById('stopwatch-display').innerText = formatted;
+        }
+
+        function selectExam(examId) {
+            currentExamId = examId;
+            isSubmitted = false;
+            currentTab = 'part1'; // Luôn bắt đầu từ Phần 1 khi chọn đề mới
+
+            for (let i = 1; i <= 3; i++) {
+                const btn = document.getElementById(`exam-btn-${i}`);
+                if (i === examId) {
+                    btn.className = "px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-extrabold transition-all bg-emerald-600 text-white shadow-md shadow-emerald-600/20";
+                } else {
+                    btn.className = "px-5 py-2.5 rounded-2xl text-xs sm:text-sm font-extrabold transition-all bg-emerald-50 text-emerald-900 hover:bg-emerald-100 border border-emerald-200";
+                }
+            }
+
+            document.getElementById('result-summary-card').classList.add('hidden');
+            document.getElementById('section-score-breakdown').classList.add('hidden');
+            document.getElementById('post-submit-filter-bar').classList.add('hidden');
+            document.getElementById('part-bottom-navigation').classList.remove('hidden');
+
+            resetTimer();
+            startTimer();
+            loadExam(examId);
+        }
+
+        function loadExam(examId) {
+            const data = examsData[examId];
+            document.getElementById('exam-title').innerText = data.title;
+            updateSidebarPills();
+            renderQuestions();
+            renderBottomNavigation();
+            renderSidebarGrid();
+            updateAnsweredCount();
+        }
+
+        function switchTab(partKey, shouldScroll = true) {
+            currentTab = partKey;
+            if (isSubmitted) {
+                submittedViewMode = partKey;
+                updatePostSubmitFilterButtons();
+            }
+
+            updateSidebarPills();
+            renderQuestions();
+            renderBottomNavigation();
+            renderSidebarGrid();
+
+            if (shouldScroll) {
+                const headerEl = document.getElementById('exam-title');
+                if (headerEl) {
+                    headerEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }
+        }
+
+        function updateSidebarPills() {
+            const parts = ['part1', 'part2', 'part3', 'part4'];
+            parts.forEach(p => {
+                const pill = document.getElementById(`side-pill-${p}`);
+                if (p === currentTab) {
+                    pill.className = "py-1.5 rounded-xl text-xs font-black bg-emerald-600 text-white shadow-xs transition";
+                } else {
+                    pill.className = "py-1.5 rounded-xl text-xs font-extrabold text-emerald-900 hover:bg-emerald-200/60 transition";
+                }
+            });
+
+            document.getElementById('sidebar-part-label').innerText = partInfo[currentTab].short;
+            
+            if (!isSubmitted) {
+                document.getElementById('current-mode-badge').innerText = `Đang làm: ${partInfo[currentTab].title}`;
+            } else {
+                document.getElementById('current-mode-badge').innerText = `Đã nộp bài • Chế độ xem chữa bài chi tiết`;
+            }
+        }
+
+        // Render khu vực điều hướng tương tác ở cuối mỗi phần (Phần 1 -> Phần 2, 3, 4)
+        function renderBottomNavigation() {
+            const navContainer = document.getElementById('part-bottom-navigation');
+            if (isSubmitted) {
+                navContainer.classList.add('hidden');
+                return;
+            }
+            navContainer.classList.remove('hidden');
+
+            const titleEl = document.getElementById('bottom-nav-title');
+            const subEl = document.getElementById('bottom-nav-subtitle');
+            const btnsContainer = document.getElementById('bottom-nav-buttons');
+            btnsContainer.innerHTML = '';
+
+            // Đếm số câu đã làm trong phần hiện tại
+            const currentQs = examsData[currentExamId].parts[currentTab];
+            const ansObj = userAnswers[currentExamId];
+            let doneInPart = 0;
+            currentQs.forEach(q => {
+                if (ansObj[q.id] !== undefined && ansObj[q.id] !== '') doneInPart++;
+            });
+
+            titleEl.innerText = `Kết thúc ${partInfo[currentTab].title} (Đã chọn ${doneInPart}/${currentQs.length} câu)`;
+            
+            if (doneInPart === currentQs.length) {
+                subEl.innerText = `🍋 Bé Chanh: "Wow, perfect nha! Bạn đã làm hết ${partInfo[currentTab].short} rồi! Chọn phần tiếp theo bên dưới nhé!"`;
+            } else {
+                subEl.innerText = `🥑 Bé Bơ: "Bạn có thể chuyển sang làm tiếp Phần 2, Phần 3, Phần 4 hoặc bấm Nộp bài bất cứ lúc nào!"`;
+            }
+
+            // Cấu hình các nút lựa chọn chuyển phần thông minh ở cuối mỗi phần (Xanh dương, Xanh lá & Vàng kem dịu)
+            const allTargets = [
+                { key: 'part1', label: 'Quay lại Phần 1: Nhận Biết - Thông Hiểu (20 câu)', icon: 'fa-book', color: 'bg-white hover:bg-emerald-50 text-emerald-900 border-emerald-200' },
+                { key: 'part2', label: 'Chuyển sang Phần 2: Vận Dụng (20 câu - 100đ)', icon: 'fa-rocket', color: 'bg-sky-600 hover:bg-sky-700 text-white border-sky-700' },
+                { key: 'part3', label: 'Chuyển sang Phần 3: Vận Dụng Cao (20 câu - 100đ)', icon: 'fa-brain', color: 'bg-yellow-200 hover:bg-yellow-300 text-yellow-950 border-yellow-300' },
+                { key: 'part4', label: 'Chuyển sang Phần 4: Trả Lời Ngắn (10 câu - 100đ)', icon: 'fa-pen-nib', color: 'bg-teal-600 hover:bg-teal-700 text-white border-teal-700' }
+            ];
+
+            allTargets.forEach(target => {
+                if (target.key !== currentTab) {
+                    const btn = document.createElement('button');
+                    btn.className = `p-4 rounded-2xl font-extrabold text-xs sm:text-sm border-2 shadow-xs transition transform hover:-translate-y-0.5 flex items-center justify-between ${target.color}`;
+                    btn.innerHTML = `
+                        <span class="flex items-center space-x-2.5 text-left">
+                            <i class="fa-solid ${target.icon} text-base"></i>
+                            <span>${target.label}</span>
+                        </span>
+                        <i class="fa-solid fa-arrow-right ml-2"></i>
+                    `;
+                    btn.onclick = () => switchTab(target.key, true);
+                    btnsContainer.appendChild(btn);
+                }
+            });
+
+            // Nút Nộp Bài Ngay ở cuối cùng
+            const submitBtn = document.createElement('button');
+            submitBtn.className = `p-4 rounded-2xl font-black text-xs sm:text-sm border-2 border-emerald-700 bg-emerald-600 hover:bg-emerald-700 text-white shadow-md transition transform hover:-translate-y-0.5 flex items-center justify-between`;
+            submitBtn.innerHTML = `
+                <span class="flex items-center space-x-2.5">
+                    <i class="fa-solid fa-circle-check text-base text-yellow-200"></i>
+                    <span>Hoàn Thành & Nộp Bài Chấm Điểm Ngay</span>
+                </span>
+                <i class="fa-solid fa-paper-plane ml-2"></i>
+            `;
+            submitBtn.onclick = () => submitExam();
+            btnsContainer.appendChild(submitBtn);
+        }
+
+        function setSubmittedView(mode) {
+            submittedViewMode = mode;
+            if (mode !== 'all') {
+                currentTab = mode;
+                updateSidebarPills();
+                renderSidebarGrid();
+            }
+            updatePostSubmitFilterButtons();
+            renderQuestions();
+        }
+
+        function updatePostSubmitFilterButtons() {
+            const modes = ['all', 'part1', 'part2', 'part3', 'part4'];
+            modes.forEach(m => {
+                const btn = document.getElementById(`sub-tab-${m}`);
+                if (m === submittedViewMode) {
+                    btn.className = "px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-black whitespace-nowrap bg-emerald-600 text-white shadow-xs";
+                } else {
+                    btn.className = "px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-extrabold whitespace-nowrap bg-white text-slate-700 border border-emerald-200 hover:bg-emerald-50";
+                }
+            });
+        }
+
+        // Render Questions Component
+        function renderQuestions() {
+            const container = document.getElementById('questions-wrapper');
+            container.innerHTML = '';
+
+            const currentAnswers = userAnswers[currentExamId];
+            let questionsToRender = [];
+
+            // Khi đang làm bài: chỉ hiển thị phần đang chọn (bắt đầu từ Phần 1)
+            // Khi đã nộp bài: hiển thị tất cả 4 phần (hoặc theo bộ lọc người dùng chọn)
+            if (!isSubmitted) {
+                questionsToRender = examsData[currentExamId].parts[currentTab];
+            } else {
+                if (submittedViewMode === 'all') {
+                    ['part1', 'part2', 'part3', 'part4'].forEach(pKey => {
+                        questionsToRender = questionsToRender.concat(examsData[currentExamId].parts[pKey]);
+                    });
+                } else {
+                    questionsToRender = examsData[currentExamId].parts[submittedViewMode];
+                }
+            }
+
+            let lastPartRendered = '';
+
+            questionsToRender.forEach((q) => {
+                // Nếu đang xem tất cả 4 phần sau nộp bài, chèn tiêu đề ngăn cách từng phần rõ ràng
+                if (isSubmitted && submittedViewMode === 'all' && q.partKey !== lastPartRendered) {
+                    lastPartRendered = q.partKey;
+                    const divider = document.createElement('div');
+                    divider.className = "bg-emerald-50 border-2 border-emerald-200 rounded-2xl px-5 py-3 flex items-center justify-between mt-4";
+                    divider.innerHTML = `
+                        <span class="font-black text-emerald-950 text-sm sm:text-base uppercase tracking-wide">${q.partName}</span>
+                        <span class="text-xs font-extrabold px-3 py-1 bg-white text-emerald-700 rounded-full border border-emerald-200">100 Điểm</span>
+                    `;
+                    container.appendChild(divider);
+                }
+
+                const isPart4 = q.partKey === 'part4';
+                const userAns = currentAnswers[q.id];
+
+                const qCard = document.createElement('div');
+                qCard.id = `q-card-${q.id}`;
+                qCard.className = "bg-white rounded-3xl p-6 shadow-xs border-2 border-emerald-100/80 hover:border-emerald-300 transition duration-200 relative";
+
+                let optionsHTML = '';
+
+                if (!isPart4) {
+                    optionsHTML = `<div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">`;
+                    q.options.forEach((opt, idx) => {
+                        const isChecked = userAns === idx;
+                        let optionStyle = "border-2 border-slate-200 bg-slate-50/80 hover:bg-sky-50/70 hover:border-sky-300 text-slate-700 font-bold";
+
+                        if (isChecked) {
+                            optionStyle = "border-2 border-sky-500 bg-sky-50 text-sky-950 font-black shadow-xs";
+                        }
+
+                        // HIGH CONTRAST COLORS FOR CORRECT / WRONG
+                        if (isSubmitted) {
+                            if (idx === q.correct) {
+                                optionStyle = "ans-correct font-black text-emerald-950 shadow-sm";
+                            } else if (isChecked && idx !== q.correct) {
+                                optionStyle = "ans-wrong font-extrabold text-red-950 shadow-sm";
+                            } else {
+                                optionStyle = "border border-slate-200 bg-slate-50 text-slate-400 opacity-60";
+                            }
+                        }
+
+                        optionsHTML += `
+                            <button onclick="recordAnswer('${q.id}', ${idx})" ${isSubmitted ? 'disabled' : ''} 
+                                class="w-full text-left p-4 rounded-2xl text-sm transition-all flex items-center space-x-3 ${optionStyle}">
+                                <span class="w-7 h-7 rounded-full border-2 flex items-center justify-center text-xs font-black shrink-0 ${isChecked && !isSubmitted ? 'bg-sky-600 text-white border-sky-600' : 'border-slate-300 bg-white text-slate-700'}">
+                                    ${String.fromCharCode(65 + idx)}
+                                </span>
+                                <span>${opt}</span>
+                            </button>
+                        `;
+                    });
+                    optionsHTML += `</div>`;
+                } else {
+                    const val = userAns || '';
+                    let inputBorder = "border-2 border-sky-300 focus:border-emerald-600 bg-sky-50/30";
+                    if (isSubmitted) {
+                        if (val.trim().toLowerCase() === q.correct.trim().toLowerCase()) {
+                            inputBorder = "border-2 border-emerald-600 bg-emerald-100 text-emerald-950 font-black";
+                        } else {
+                            inputBorder = "border-2 border-red-600 bg-red-100 text-red-950 font-black";
+                        }
+                    }
+
+                    optionsHTML = `
+                        <div class="mt-4 flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-3">
+                            <label class="text-sm font-extrabold text-slate-700">Đáp số của bạn:</label>
+                            <div class="flex items-center space-x-2 w-full sm:w-auto">
+                                <input type="text" value="${val}" onchange="recordShortAnswer('${q.id}', this.value)" ${isSubmitted ? 'disabled' : ''} 
+                                    placeholder="Nhập con số..." 
+                                    class="px-4 py-3 rounded-2xl ${inputBorder} text-sm font-black outline-none transition w-full sm:w-56 shadow-xs">
+                                <span class="text-sm font-extrabold text-slate-700">${q.unit || ''}</span>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // Explanation Block với Linh vật Bé Bơ Xanh hướng dẫn chi tiết
+                let explanationHTML = '';
+                if (isSubmitted) {
+                    explanationHTML = `
+                        <div class="mt-6 p-5 rounded-2xl bg-emerald-50/70 border-2 border-emerald-200 text-xs sm:text-sm space-y-3 shadow-xs">
+                            <div class="font-black text-emerald-800 flex items-center text-sm uppercase tracking-wider">
+                                <span class="text-xl mr-2">🥑</span> Bé Bơ Xanh Hướng Dẫn Giải Chi Tiết:
+                            </div>
+                            <p class="text-slate-800 font-semibold leading-relaxed">${q.explanation}</p>
+                            
+                            <!-- Ví dụ minh họa thực tế -->
+                            <div class="bg-yellow-50/90 p-3.5 rounded-xl border border-yellow-200 mt-2 text-xs">
+                                <div class="font-extrabold text-yellow-800 flex items-center mb-1">
+                                    <i class="fa-solid fa-lightbulb text-yellow-500 mr-1.5"></i> Ví dụ thực tế / Mẹo ghi nhớ:
+                                </div>
+                                <div class="text-slate-700 leading-relaxed font-medium">${q.example || 'Áp dụng định luật vào các hiện tượng quen thuộc đời sống.'}</div>
+                            </div>
+
+                            ${isPart4 ? `<div class="pt-1 font-black text-emerald-700 text-sm">✅ Đáp án đúng chính xác: ${q.correct} ${q.unit || ''}</div>` : ''}
+                        </div>
+                    `;
+                }
+
+                qCard.innerHTML = `
+                    <div class="flex items-center justify-between gap-4">
+                        <div class="flex items-center space-x-2">
+                            <span class="px-3.5 py-1 rounded-full text-xs font-black bg-sky-100 text-sky-900 border border-sky-200">
+                                Câu ${q.num}
+                            </span>
+                            <span class="text-xs font-black px-3 py-1 bg-emerald-50 text-emerald-700 rounded-full border border-emerald-200">
+                                +${q.points} Điểm
+                            </span>
+                        </div>
+                    </div>
+                    <h4 class="text-base sm:text-lg font-extrabold text-slate-800 mt-3 leading-snug">${q.question}</h4>
+                    ${optionsHTML}
+                    ${explanationHTML}
+                `;
+
+                container.appendChild(qCard);
+            });
+        }
+
+        // Sidebar Grid Navigator
+        function renderSidebarGrid() {
+            const grid = document.getElementById('quiz-grid');
+            grid.innerHTML = '';
+
+            const questions = examsData[currentExamId].parts[currentTab];
+            const currentAnswers = userAnswers[currentExamId];
+
+            questions.forEach((q) => {
+                const userAns = currentAnswers[q.id];
+                const isAnswered = userAns !== undefined && userAns !== '';
+
+                let btnStyle = "bg-slate-50 text-slate-700 hover:bg-sky-50 border border-slate-200 font-bold";
+
+                if (isAnswered) {
+                    btnStyle = "bg-sky-600 text-white font-black shadow-xs border border-sky-700";
+                }
+            });
+
+            document.getElementById('sidebar-part-label').innerText = partInfo[currentTab].short;
+            
+            if (!isSubmitted) {
+                document.getElementById('current-mode-badge').innerText = `Đang làm: ${partInfo[currentTab].title}`;
+            } else {
+                document.getElementById('current-mode-badge').innerText = `Đã nộp bài • Chế độ xem chữa bài chi tiết`;
+            }
+        }
+
+        // Render khu vực điều hướng tương tác ở cuối mỗi phần (Phần 1 -> Phần 2, 3, 4)
+        function renderBottomNavigation() {
+            const navContainer = document.getElementById('part-bottom-navigation');
+            if (isSubmitted) {
+                navContainer.classList.add('hidden');
+                return;
+            }
+            navContainer.classList.remove('hidden');
+
+            const titleEl = document.getElementById('bottom-nav-title');
+            const subEl = document.getElementById('bottom-nav-subtitle');
+            const btnsContainer = document.getElementById('bottom-nav-buttons');
+            btnsContainer.innerHTML = '';
+
+            // Đếm số câu đã làm trong phần hiện tại
+            const currentQs = examsData[currentExamId].parts[currentTab];
+            const ansObj = userAnswers[currentExamId];
+            let doneInPart = 0;
+            currentQs.forEach(q => {
+                if (ansObj[q.id] !== undefined && ansObj[q.id] !== '') doneInPart++;
+            });
+
+            titleEl.innerText = `Kết thúc ${partInfo[currentTab].title} (Đã chọn ${doneInPart}/${currentQs.length} câu)`;
+            
+            if (doneInPart === currentQs.length) {
+                subEl.innerText = `🍋 Bé Chanh: "Wow, perfect nha! Bạn đã làm hết ${partInfo[currentTab].short} rồi! Chọn phần tiếp theo bên dưới nhé!"`;
+            } else {
+                subEl.innerText = `🥑 Bé Bơ: "Bạn có thể chuyển sang làm tiếp Phần 2, Phần 3, Phần 4 hoặc bấm Nộp bài bất cứ lúc nào!"`;
+            }
+
+            // Cấu hình các nút lựa chọn chuyển phần thông minh ở cuối mỗi phần
+            const allTargets = [
+                { key: 'part1', label: 'Quay lại Phần 1: Nhận Biết - Thông Hiểu (20 câu)', icon: 'fa-book', color: 'bg-white hover:bg-amber-50 text-amber-900 border-amber-300' },
+                { key: 'part2', label: 'Chuyển sang Phần 2: Vận Dụng (20 câu - 100đ)', icon: 'fa-rocket', color: 'bg-sky-500 hover:bg-sky-600 text-white border-sky-600' },
+                { key: 'part3', label: 'Chuyển sang Phần 3: Vận Dụng Cao (20 câu - 100đ)', icon: 'fa-brain', color: 'bg-amber-500 hover:bg-amber-600 text-white border-amber-600' },
+                { key: 'part4', label: 'Chuyển sang Phần 4: Trả Lời Ngắn (10 câu - 100đ)', icon: 'fa-pen-nib', color: 'bg-teal-600 hover:bg-teal-700 text-white border-teal-700' }
+            ];
+
+            allTargets.forEach(target => {
+                if (target.key !== currentTab) {
+                    const btn = document.createElement('button');
+                    btn.className = `p-4 rounded-2xl font-extrabold text-xs sm:text-sm border-2 shadow-sm transition transform hover:-translate-y-0.5 flex items-center justify-between ${target.color}`;
+                    btn.innerHTML = `
+                        <span class="flex items-center space-x-2.5 text-left">
+                            <i class="fa-solid ${target.icon} text-base"></i>
+                            <span>${target.label}</span>
+                        </span>
+                        <i class="fa-solid fa-arrow-right ml-2"></i>
+                    `;
+                    btn.onclick = () => switchTab(target.key, true);
+                    btnsContainer.appendChild(btn);
+                }
+            });
+
+            // Nút Nộp Bài Ngay ở cuối cùng
+            const submitBtn = document.createElement('button');
+            submitBtn.className = `p-4 rounded-2xl font-black text-xs sm:text-sm border-2 border-emerald-700 bg-emerald-600 hover:bg-emerald-700 text-white shadow-md transition transform hover:-translate-y-0.5 flex items-center justify-between`;
+            submitBtn.innerHTML = `
+                <span class="flex items-center space-x-2.5">
+                    <i class="fa-solid fa-circle-check text-base text-yellow-300"></i>
+                    <span>Hoàn Thành & Nộp Bài Chấm Điểm Ngay</span>
+                </span>
+                <i class="fa-solid fa-paper-plane ml-2"></i>
+            `;
+            submitBtn.onclick = () => submitExam();
+            btnsContainer.appendChild(submitBtn);
+        }
+
+        function setSubmittedView(mode) {
+            submittedViewMode = mode;
+            if (mode !== 'all') {
+                currentTab = mode;
+                updateSidebarPills();
+                renderSidebarGrid();
+            }
+            updatePostSubmitFilterButtons();
+            renderQuestions();
+        }
+
+        function updatePostSubmitFilterButtons() {
+            const modes = ['all', 'part1', 'part2', 'part3', 'part4'];
+            modes.forEach(m => {
+                const btn = document.getElementById(`sub-tab-${m}`);
+                if (m === submittedViewMode) {
+                    btn.className = "px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-black whitespace-nowrap bg-amber-500 text-white shadow-sm";
+                } else {
+                    btn.className = "px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-extrabold whitespace-nowrap bg-white text-slate-700 border border-amber-200 hover:bg-amber-50";
+                }
+            });
+        }
+
+        // Render Questions Component
+        function renderQuestions() {
+            const container = document.getElementById('questions-wrapper');
+            container.innerHTML = '';
+
+            const currentAnswers = userAnswers[currentExamId];
+            let questionsToRender = [];
+
+            // Khi đang làm bài: chỉ hiển thị phần đang chọn (bắt đầu từ Phần 1)
+            // Khi đã nộp bài: hiển thị tất cả 4 phần (hoặc theo bộ lọc người dùng chọn)
+            if (!isSubmitted) {
+                questionsToRender = examsData[currentExamId].parts[currentTab];
+            } else {
+                if (submittedViewMode === 'all') {
+                    ['part1', 'part2', 'part3', 'part4'].forEach(pKey => {
+                        questionsToRender = questionsToRender.concat(examsData[currentExamId].parts[pKey]);
+                    });
+                } else {
+                    questionsToRender = examsData[currentExamId].parts[submittedViewMode];
+                }
+            }
+
+            let lastPartRendered = '';
+
+            questionsToRender.forEach((q) => {
+                // Nếu đang xem tất cả 4 phần sau nộp bài, chèn tiêu đề ngăn cách từng phần rõ ràng
+                if (isSubmitted && submittedViewMode === 'all' && q.partKey !== lastPartRendered) {
+                    lastPartRendered = q.partKey;
+                    const divider = document.createElement('div');
+                    divider.className = "bg-amber-100/90 border-2 border-amber-300 rounded-2xl px-5 py-3 flex items-center justify-between mt-4";
+                    divider.innerHTML = `
+                        <span class="font-black text-amber-950 text-sm sm:text-base uppercase tracking-wide">${q.partName}</span>
+                        <span class="text-xs font-extrabold px-3 py-1 bg-white text-emerald-700 rounded-full border border-emerald-200">100 Điểm</span>
+                    `;
+                    container.appendChild(divider);
+                }
+
+                const isPart4 = q.partKey === 'part4';
+                const userAns = currentAnswers[q.id];
+
+                const qCard = document.createElement('div');
+                qCard.id = `q-card-${q.id}`;
+                qCard.className = "bg-white rounded-3xl p-6 shadow-sm border-2 border-amber-100 hover:border-amber-300 transition duration-200 relative";
+
+                let optionsHTML = '';
+
+                if (!isPart4) {
+                    optionsHTML = `<div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">`;
+                    q.options.forEach((opt, idx) => {
+                        const isChecked = userAns === idx;
+                        let optionStyle = "border-2 border-slate-200 bg-slate-50/80 hover:bg-amber-50/70 hover:border-amber-300 text-slate-700 font-bold";
+
+                        if (isChecked) {
+                            optionStyle = "border-2 border-amber-500 bg-amber-100/70 text-amber-950 font-black shadow-xs";
+                        }
+
+                        // HIGH CONTRAST COLORS FOR CORRECT / WRONG
+                        if (isSubmitted) {
+                            if (idx === q.correct) {
+                                optionStyle = "ans-correct font-black text-emerald-950 shadow-sm";
+                            } else if (isChecked && idx !== q.correct) {
+                                optionStyle = "ans-wrong font-extrabold text-red-950 shadow-sm";
+                            } else {
+                                optionStyle = "border border-slate-200 bg-slate-50 text-slate-400 opacity-60";
+                            }
+                        }
+
+                        optionsHTML += `
+                            <button onclick="recordAnswer('${q.id}', ${idx})" ${isSubmitted ? 'disabled' : ''} 
+                                class="w-full text-left p-4 rounded-2xl text-sm transition-all flex items-center space-x-3 ${optionStyle}">
+                                <span class="w-7 h-7 rounded-full border-2 flex items-center justify-center text-xs font-black shrink-0 ${isChecked && !isSubmitted ? 'bg-amber-500 text-white border-amber-500' : 'border-slate-300 bg-white text-slate-700'}">
+                                    ${String.fromCharCode(65 + idx)}
+                                </span>
+                                <span>${opt}</span>
+                            </button>
+                        `;
+                    });
+                    optionsHTML += `</div>`;
+                } else {
+                    const val = userAns || '';
+                    let inputBorder = "border-2 border-amber-300 focus:border-emerald-600 bg-amber-50/30";
+                    if (isSubmitted) {
+                        if (val.trim().toLowerCase() === q.correct.trim().toLowerCase()) {
+                            inputBorder = "border-2 border-emerald-600 bg-emerald-100 text-emerald-950 font-black";
+                        } else {
+                            inputBorder = "border-2 border-red-600 bg-red-100 text-red-950 font-black";
+                        }
+                    }
+
+                    optionsHTML = `
+                        <div class="mt-4 flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-3">
+                            <label class="text-sm font-extrabold text-slate-700">Đáp số của bạn:</label>
+                            <div class="flex items-center space-x-2 w-full sm:w-auto">
+                                <input type="text" value="${val}" onchange="recordShortAnswer('${q.id}', this.value)" ${isSubmitted ? 'disabled' : ''} 
+                                    placeholder="Nhập con số..." 
+                                    class="px-4 py-3 rounded-2xl ${inputBorder} text-sm font-black outline-none transition w-full sm:w-56 shadow-xs">
+                                <span class="text-sm font-extrabold text-slate-700">${q.unit || ''}</span>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // Explanation Block với Linh vật Bé Bơ Xanh hướng dẫn chi tiết
+                let explanationHTML = '';
+                if (isSubmitted) {
+                    explanationHTML = `
+                        <div class="mt-6 p-5 rounded-2xl bg-emerald-50/70 border-2 border-emerald-200 text-xs sm:text-sm space-y-3 shadow-xs">
+                            <div class="font-black text-emerald-800 flex items-center text-sm uppercase tracking-wider">
+                                <span class="text-xl mr-2">🥑</span> Bé Bơ Xanh Hướng Dẫn Giải Chi Tiết:
+                            </div>
+                            <p class="text-slate-800 font-semibold leading-relaxed">${q.explanation}</p>
+                            
+                            <!-- Ví dụ minh họa thực tế -->
+                            <div class="bg-amber-50 p-3.5 rounded-xl border border-amber-200 mt-2 text-xs">
+                                <div class="font-extrabold text-amber-800 flex items-center mb-1">
+                                    <i class="fa-solid fa-lightbulb text-amber-500 mr-1.5"></i> Ví dụ thực tế / Mẹo ghi nhớ:
+                                </div>
+                                <div class="text-slate-700 leading-relaxed font-medium">${q.example || 'Áp dụng định luật vào các hiện tượng quen thuộc đời sống.'}</div>
+                            </div>
+
+                            ${isPart4 ? `<div class="pt-1 font-black text-emerald-700 text-sm">✅ Đáp án đúng chính xác: ${q.correct} ${q.unit || ''}</div>` : ''}
+                        </div>
+                    `;
+                }
+
+                qCard.innerHTML = `
+                    <div class="flex items-center justify-between gap-4">
+                        <div class="flex items-center space-x-2">
+                            <span class="px-3.5 py-1 rounded-full text-xs font-black bg-amber-100 text-amber-900 border border-amber-300">
+                                Câu ${q.num}
+                            </span>
+                            <span class="text-xs font-black px-3 py-1 bg-emerald-50 text-emerald-700 rounded-full border border-emerald-200">
+                                +${q.points} Điểm
+                            </span>
+                        </div>
+                    </div>
+                    <h4 class="text-base sm:text-lg font-extrabold text-slate-800 mt-3 leading-snug">${q.question}</h4>
+                    ${optionsHTML}
+                    ${explanationHTML}
+                `;
+
+                container.appendChild(qCard);
+            });
+        }
+
+        // Sidebar Grid Navigator
+        function renderSidebarGrid() {
+            const grid = document.getElementById('quiz-grid');
+            grid.innerHTML = '';
+
+            const questions = examsData[currentExamId].parts[currentTab];
+            const currentAnswers = userAnswers[currentExamId];
+
+            questions.forEach((q) => {
+                const userAns = currentAnswers[q.id];
+                const isAnswered = userAns !== undefined && userAns !== '';
+
+                let btnStyle = "bg-amber-50/70 text-slate-700 hover:bg-amber-100 border border-amber-200 font-bold";
+
+                if (isAnswered) {
+                    btnStyle = "bg-amber-500 text-white font-black shadow-xs border border-amber-600";
+                }
+
+                if (isSubmitted) {
+                    let isCorrect = false;
+                    if (currentTab === 'part4') {
+                        isCorrect = userAns && userAns.toString().trim().toLowerCase() === q.correct.toString().trim().toLowerCase();
+                    } else {
+                        isCorrect = userAns === q.correct;
+                    }
+
+                    if (isCorrect) {
+                        btnStyle = "bg-emerald-600 text-white font-black border-2 border-emerald-700";
+                    } else {
+                        btnStyle = "bg-red-600 text-white font-black border-2 border-red-700";
+                    }
+                }
+
+                const btn = document.createElement('button');
+                btn.className = `w-10 h-10 rounded-xl text-xs flex items-center justify-center transition-all ${btnStyle}`;
+                btn.innerText = q.num;
+                btn.onclick = () => {
+                    if (isSubmitted && submittedViewMode !== 'all' && submittedViewMode !== currentTab) {
+                        setSubmittedView(currentTab);
+                    }
+                    const el = document.getElementById(`q-card-${q.id}`);
+                    if (el) {
+                        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                };
+                grid.appendChild(btn);
+            });
+        }
+
+        function recordAnswer(qId, optionIndex) {
+            if (isSubmitted) return;
+            userAnswers[currentExamId][qId] = optionIndex;
+            renderQuestions();
+            renderBottomNavigation();
+            renderSidebarGrid();
+            updateAnsweredCount();
+        }
+
+        function recordShortAnswer(qId, val) {
+            if (isSubmitted) return;
+            userAnswers[currentExamId][qId] = val;
+            renderBottomNavigation();
+            renderSidebarGrid();
+            updateAnsweredCount();
+        }
+
+        function updateAnsweredCount() {
+            const allParts = examsData[currentExamId].parts;
+            let totalAnswered = 0;
+            let totalQuestions = 0;
+
+            for (let partKey in allParts) {
+                allParts[partKey].forEach(q => {
+                    totalQuestions++;
+                    const ans = userAnswers[currentExamId][q.id];
+                    if (ans !== undefined && ans !== '') {
+                        totalAnswered++;
+                    }
+                });
+            }
+
+            document.getElementById('answered-badge').innerText = `Đã làm: ${totalAnswered}/${totalQuestions}`;
+            
+            // Cập nhật câu động viên nhỏ ở Sidebar theo tiến độ làm bài
+            const tipEl = document.getElementById('sidebar-mascot-tip');
+            if (!isSubmitted) {
+                if (totalAnswered === 0) {
+                    tipEl.innerText = `"Cố lên nha! Đọc kỹ đề và chọn đáp án tự tin nhất nhé!"`;
+                } else if (totalAnswered < 35) {
+                    tipEl.innerText = `"Bạn đang làm tốt lắm! Tiếp tục chinh phục từng câu nhé!"`;
+                } else if (totalAnswered < 70) {
+                    tipEl.innerText = `"Wow, hơn nửa chặng đường rồi! Cố gắng về đích nha!"`;
+                } else {
+                    tipEl.innerText = `"Wow, perfect nha! Bạn đã hoàn thành tất cả 70 câu, bấm Nộp Bài thôi!"`;
+                }
+            }
+        }
+
+        // Submit, Grade, Analyze Weakest Section & Generate Encouragement
+        function submitExam() {
+            if (isSubmitted) {
+                showCustomModal('🍋', 'Bé Chanh nhắc nhẹ', 'Bạn đã nộp bài rồi! Hãy xem bảng đánh giá kết quả & phần hướng dẫn giải chi tiết của Bé Bơ ngay trên màn hình nhé.', [
+                    { text: 'Đã hiểu', className: 'px-5 py-2.5 rounded-xl bg-emerald-600 text-white font-extrabold text-xs' }
+                ]);
+                return;
+            }
+
+            isSubmitted = true;
+            submittedViewMode = 'all';
+            pauseTimer();
+
+            let totalScore = 0;
+            let correctCount = 0;
+            let totalQuestions = 0;
+            const partScores = { part1: 0, part2: 0, part3: 0, part4: 0 };
+            const partWrongCounts = { part1: 0, part2: 0, part3: 0, part4: 0 };
+
+            const currentAnswers = userAnswers[currentExamId];
+            const examParts = examsData[currentExamId].parts;
+
+            for (let partKey in examParts) {
+                examParts[partKey].forEach(q => {
+                    totalQuestions++;
+                    const uAns = currentAnswers[q.id];
+                    let isCorrect = false;
+
+                    if (partKey === 'part4') {
+                        if (uAns && uAns.toString().trim().toLowerCase() === q.correct.toString().trim().toLowerCase()) {
+                            isCorrect = true;
+                        }
+                    } else {
+                        if (uAns === q.correct) {
+                            isCorrect = true;
+                        }
+                    }
+
+                    if (isCorrect) {
+                        correctCount++;
+                        totalScore += q.points;
+                        partScores[partKey] += q.points;
+                    } else {
+                        partWrongCounts[partKey]++;
+                    }
+                });
+            }
+
+            // Phân tích phần làm sai nhiều nhất
+            let maxWrong = -1;
+            let weakestPartKey = 'part1';
+            for (let p in partWrongCounts) {
+                if (partWrongCounts[p] > maxWrong) {
+                    maxWrong = partWrongCounts[p];
+                    weakestPartKey = p;
+                }
+            }
+
+            // Gợi ý ôn tập tương ứng
+            const weakestDetails = {
+                part1: {
+                    title: `Phần 1: Nhận Biết - Thông Hiểu (Sai ${partWrongCounts.part1}/20 câu)`,
+                    advice: "Bạn cần xem lại định nghĩa, khái niệm cơ bản và học thuộc lòng các công thức nền tảng trong PHẦN A. Hãy tập trung chú ý các đơn vị đo chuẩn trong hệ SI!"
+                },
+                part2: {
+                    title: `Phần 2: Vận Dụng (Sai ${partWrongCounts.part2}/20 câu)`,
+                    advice: "Bạn nên rèn luyện kỹ năng biến đổi linh hoạt các công thức, làm thêm bài tập áp dụng vào các hiện tượng thực tế đơn giản trong cuộc sống hàng ngày."
+                },
+                part3: {
+                    title: `Phần 3: Vận Dụng Cao (Sai ${partWrongCounts.part3}/20 câu)`,
+                    advice: "Hãy rèn luyện tư duy tổng hợp bài toán đa bước, liên kết nhiều khái niệm (điện, cơ, nhiệt) thành một hệ thống hoàn chỉnh và kiểm tra kỹ điều kiện bài toán."
+                },
+                part4: {
+                    title: `Phần 4: Trả Lời Ngắn (Sai ${partWrongCounts.part4}/10 câu)`,
+                    advice: "Hãy chú ý cẩn thận hơn trong quá trình tính toán số liệu cuối cùng, đổi đúng đơn vị đo (ví dụ: km/h sang m/s, phút sang giây, kW sang W) trước khi bấm đáp số."
+                }
+            };
+
+            document.getElementById('weakest-section-title').innerText = weakestDetails[weakestPartKey].title;
+            document.getElementById('weakest-section-advice').innerText = weakestDetails[weakestPartKey].advice;
+
+            // Lời động viên của Bé Chanh Vàng theo mức điểm
+            let encouragement = "";
+            if (totalScore >= 350) {
+                encouragement = "Wow, perfect nha! 🌟 Bạn nắm cực kỳ vững kiến thức Vật lý SGK và có khả năng tư duy tuyệt vời. Bé Chanh tự hào về bạn lắm!";
+            } else if (totalScore >= 250) {
+                encouragement = "Tuyệt vời lắm nha! 👍 Bạn đã hiểu hầu hết kiến thức trọng tâm rồi. Chỉ cần xem lại hướng dẫn của Bé Bơ ở vài câu chưa chính xác là bạn sẽ đạt điểm tối đa!";
+            } else if (totalScore >= 150) {
+                encouragement = "Khá tốt rồi nè! 💪 Bạn đã có nền tảng cơ bản vững vàng. Hãy dành thêm chút thời gian ôn lại PHẦN A và đọc lời giải chi tiết để bứt phá ở lần sau nha!";
+            } else {
+                encouragement = "Đừng nản chí nha! ❤️ Vật lý là môn học khám phá tự nhiên cần sự kiên trì. Hãy quay lại PHẦN A đọc lý thuyết & ví dụ cùng Bé Bơ, bạn chắc chắn sẽ tiến bộ vượt bậc!";
+            }
+            document.getElementById('encouragement-message').innerText = encouragement;
+            document.getElementById('sidebar-mascot-tip').innerText = totalScore >= 250 ? `"Wow, perfect nha! Xem chữa bài chi tiết bên trái nhé!"` : `"Đừng nản chí nha! Xem Bé Bơ giải thích từng câu để rút kinh nghiệm nè!"`;
+
+            // Display Results
+            document.getElementById('total-score-display').innerText = totalScore;
+            document.getElementById('correct-count-display').innerText = `${correctCount}/${totalQuestions}`;
+            
+            // Time display
+            const m = Math.floor(stopwatchSeconds / 60);
+            const s = stopwatchSeconds % 60;
+            document.getElementById('final-time-display').innerText = `${m}p ${s}s`;
+
+            // Display breakdown scores
+            document.getElementById('score-p1').innerText = `${partScores.part1}/100`;
+            document.getElementById('score-p2').innerText = `${partScores.part2}/100`;
+            document.getElementById('score-p3').innerText = `${partScores.part3}/100`;
+            document.getElementById('score-p4').innerText = `${partScores.part4}/100`;
+
+            document.getElementById('result-summary-card').classList.remove('hidden');
+            document.getElementById('section-score-breakdown').classList.remove('hidden');
+            document.getElementById('post-submit-filter-bar').classList.remove('hidden');
+            document.getElementById('part-bottom-navigation').classList.add('hidden');
+
+            updateSidebarPills();
+            updatePostSubmitFilterButtons();
+            renderQuestions();
+            renderSidebarGrid();
+
+            document.getElementById('result-summary-card').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function scrollToQuestions() {
+            document.getElementById('questions-wrapper').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function resetCurrentExam() {
+            showCustomModal('🍋', 'Làm lại đề kiểm tra?', 'Bé Chanh hỏi bạn: Bạn có chắc chắn muốn xóa các đáp án hiện tại và làm lại đề kiểm tra này từ Phần 1 không?', [
+                { text: 'Hủy bỏ', className: 'px-4 py-2 rounded-xl bg-slate-100 text-slate-700 font-bold text-xs' },
+                { 
+                    text: 'Đồng ý làm lại', 
+                    className: 'px-5 py-2 rounded-xl bg-emerald-600 text-white font-extrabold text-xs shadow-sm',
+                    onClick: () => {
+                        userAnswers[currentExamId] = {};
+                        isSubmitted = false;
+                        currentTab = 'part1';
+                        document.getElementById('result-summary-card').classList.add('hidden');
+                        document.getElementById('section-score-breakdown').classList.add('hidden');
+                        document.getElementById('post-submit-filter-bar').classList.add('hidden');
+                        document.getElementById('part-bottom-navigation').classList.remove('hidden');
+                        resetTimer();
+                        startTimer();
+                        loadExam(currentExamId);
+                    }
+                }
+            ]);
+        }
+    </script>
+</body>
+</html>
